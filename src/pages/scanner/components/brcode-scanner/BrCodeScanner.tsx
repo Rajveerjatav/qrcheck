@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import classes from "./index.module.css";
 import { useRouter } from "next/navigation";
 import {
@@ -17,8 +17,6 @@ const BrCodeScanner: React.FC = () => {
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [isClient, setIsClient] = useState(false);
-
   const {
     results,
     selectedDeviceId,
@@ -36,35 +34,38 @@ const BrCodeScanner: React.FC = () => {
     videoRef: videoRef,
   });
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  useEffect(() => {
-    if (isClient) {
+  // Ensure openCamera is stable and doesn't trigger re-renders
+  const handleOpenCamera = useCallback(() => {
+    if (typeof window !== "undefined") {
       openCamera();
     }
-  }, [isClient]);
+  }, [openCamera]);
 
-  useEffect(() => {
+  const handleStartScanning = useCallback(() => {
     if (isCameraOpen) {
       startScanning();
     }
-  }, [isCameraOpen]);
+  }, [isCameraOpen, startScanning]);
+
+  useEffect(() => {
+    handleOpenCamera();
+  }, [handleOpenCamera]);
+
+  useEffect(() => {
+    handleStartScanning();
+  }, [handleStartScanning]);
 
   const newVideoInputDevices = videoInputDevices.map((device) => ({
     value: device.deviceId,
     label: device.label || `Camera ${videoInputDevices.indexOf(device) + 1}`,
   }));
 
-  if (!isClient) {
-    return null; // or a loading spinner
-  }
-
   return (
     <div className={classes.wrapper}>
       <div>
-        <video ref={videoRef} className={classes.video} />
+        <video ref={videoRef} className={classes.video}>
+          <track kind="captions" />
+        </video>
         <div className={classes.frameContainer}>
           <div className={`${classes.corner} ${classes.topLeft}`} />
           <div className={`${classes.corner} ${classes.topRight}`} />
@@ -77,7 +78,6 @@ const BrCodeScanner: React.FC = () => {
               ${status === "Scanning" && classes.scanStatusScanning} 
               `}
           >
-            {" "}
             <IoMdStopwatch /> <span>{status}</span>
           </div>
         </div>
@@ -100,7 +100,6 @@ const BrCodeScanner: React.FC = () => {
             setSelectedDevice={setSelectedDeviceId}
             openCamera={openCamera}
           />
-
           <button className={classes.smallBtn} onClick={toggleFlashlight}>
             {isFlashOn ? <IoIosFlash size={20} /> : <IoIosFlashOff size={20} />}
           </button>
