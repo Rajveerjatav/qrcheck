@@ -1,4 +1,3 @@
-// SonarQube Ignore: Video element is for QR scanning, captions not needed
 "use client";
 import React, { useEffect, useRef } from "react";
 import classes from "./index.module.css";
@@ -36,7 +35,9 @@ const BrCodeScanner: React.FC = () => {
   });
 
   useEffect(() => {
-    openCamera();
+    if (typeof navigator !== 'undefined') {
+      openCamera();
+    }
   }, []);
 
   useEffect(() => {
@@ -45,13 +46,10 @@ const BrCodeScanner: React.FC = () => {
     }
   }, [isCameraOpen]);
 
-
   const newVideoInputDevices = videoInputDevices.map((device) => ({
     value: device.deviceId,
     label: device.label || `Camera ${videoInputDevices.indexOf(device) + 1}`,
   }));
-
-  
 
   return (
     <div className={classes.wrapper}>
