@@ -1,0 +1,231 @@
+.wrapper {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .video {
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    right: 0px;
+  }
+  
+  .frameContainer {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 250px;
+    height: 250px;
+    pointer-events: none;
+  }
+  
+  .corner {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border: 3px solid #00ff00;
+  }
+  
+  .topLeft {
+    top: 0;
+    left: 0;
+    border-right: none;
+    border-bottom: none;
+  }
+  
+  .topRight {
+    top: 0;
+    right: 0;
+    border-left: none;
+    border-bottom: none;
+  }
+  
+  .bottomLeft {
+    bottom: 0;
+    left: 0;
+    border-right: none;
+    border-top: none;
+  }
+  
+  .bottomRight {
+    bottom: 0;
+    right: 0;
+    border-left: none;
+    border-top: none;
+  }
+  
+  .topHeader{
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    padding: 16px;
+    max-width: 460px;
+  }
+  .scanStatus {
+    background-color: #000;
+    color: #fff;
+    border: 0px;
+    border-radius: 24px;
+    font-size: 14px;
+    padding: 4px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+  }
+  .scanStatus > svg{
+    margin-right: 5px;
+  }
+  .scanStatus > span{
+    margin-bottom: 2px;
+  }
+  .scanStatusBgRed{
+    background-color: #EB4E41;
+  }
+  .scanStatusSuccess{
+    background-color: #45a049;
+  }
+  .scanStatusScanning{
+    background-color: rgb(245, 245, 5);
+  }
+  .smallBtn{
+    background-color: #000 !important;
+    color: #fff !important;
+    max-height: 35px;
+    max-width: 35px;
+    height: 35px;
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0px;
+    border-radius: 100%;
+  }
+  .resultText {
+    word-break: break-all;
+    margin: 15px 0;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    font-family: monospace;
+  }
+  
+  .totalScanned {
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 15px;
+  }
+  
+  .modalActions {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+  }
+  
+  .closeButton {
+    padding: 8px 16px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .closeButton:hover {
+    background-color: #45a049;
+  }
+  
+  
+  
+  .scannedCodesContainer {
+    width: 100%;
+    padding: 15px;
+    background-color: transparent;
+    border-radius: 8px;
+    position: absolute;
+    bottom: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .scannedCodesList {
+    position: relative;
+    
+  }
+  
+  .scannedCode {
+    display: flex;
+    background-color: #e9f7ef;
+    border: 3px solid #fff;
+    align-items: center;
+    position: absolute;
+    bottom: -36px;
+    border-radius: 100px;
+    width: 75px;
+    height: 75px;
+  }
+  .scannerImg{
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+  }
+  .scannerCount{
+    margin: 0px;
+    background-color: #fff;
+    color: #000;
+    position: absolute;
+    top: -2px;
+    right: -4px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+  }
+  
+  
+  
+  .actionsContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+  }
+  
+  .submitBtn{
+    background: #EB4E41;
+    border-radius: 100%;
+    border: 3px solid #fff;
+    color: #fff;
+    cursor: pointer;
+    max-height: 75px;
+    max-width: 75px;
+    height: 75px;
+    width: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  @media screen and (max-width:650px) {
+    .topHeader{
+      max-width: 100%;
+    }
+  }
