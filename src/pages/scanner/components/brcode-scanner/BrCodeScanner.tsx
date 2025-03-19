@@ -60,22 +60,26 @@ const BrCodeScanner: React.FC = () => {
   return (
     <div className={classes.wrapper}>
       <div>
-        <video ref={videoRef} className={classes.video} />
-        <div className={classes.frameContainer}>
-          <div className={`${classes.corner} ${classes.topLeft}`} />
-          <div className={`${classes.corner} ${classes.topRight}`} />
-          <div className={`${classes.corner} ${classes.bottomLeft}`} />
-          <div className={`${classes.corner} ${classes.bottomRight}`} />
-          <div
-            className={`${classes.scanStatus} 
-            ${status === "Already Scanned" && classes.scanStatusBgRed} 
-            ${status === "Scanned" && classes.scanStatusSuccess} 
-            ${status === "Scanning" && classes.scanStatusScanning}`}
-          >
-            <IoMdStopwatch /> <span>{status}</span>
-          </div>
-        </div>
-        <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
+        {isBrowser && (
+          <>
+            <video ref={videoRef} className={classes.video} />
+            <div className={classes.frameContainer}>
+              <div className={`${classes.corner} ${classes.topLeft}`} />
+              <div className={`${classes.corner} ${classes.topRight}`} />
+              <div className={`${classes.corner} ${classes.bottomLeft}`} />
+              <div className={`${classes.corner} ${classes.bottomRight}`} />
+              <div
+                className={`${classes.scanStatus} 
+                ${status === "Already Scanned" && classes.scanStatusBgRed} 
+                ${status === "Scanned" && classes.scanStatusSuccess} 
+                ${status === "Scanning" && classes.scanStatusScanning}`}
+              >
+                <IoMdStopwatch /> <span>{status}</span>
+              </div>
+            </div>
+            <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
+          </>
+        )}
       </div>
       <div className={classes.topHeader}>
         <button
