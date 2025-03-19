@@ -1,8 +1,7 @@
+import BrCodeScanner from "@/pages/scanner/components/brcode-scanner/BrCodeScanner";
 
 const Page: React.FC = () => {
-  return (
-    <h2>Scanner</h2>
-  );
+  return <BrCodeScanner />;
 };
 
 export default Page;

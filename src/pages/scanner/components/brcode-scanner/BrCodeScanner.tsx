@@ -42,7 +42,7 @@ const BrCodeScanner: React.FC = () => {
   }, [openCamera]);
 
   useEffect(() => {
-    if (isCameraOpen) {
+    if (typeof window !== "undefined" && isCameraOpen) {
       startScanning();
     }
   }, [isCameraOpen, startScanning]);
