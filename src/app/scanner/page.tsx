@@ -1,3 +1,4 @@
+"use client";
 import dynamic from "next/dynamic";
 
 // Disable SSR to avoid "navigator is not defined" error
