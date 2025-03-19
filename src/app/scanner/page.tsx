@@ -1,11 +1,9 @@
-"use client";
-import dynamic from "next/dynamic";
-
-// Disable SSR to avoid "navigator is not defined" error
-const BrCodeScanner = dynamic(() => import("@/pages/scanner/components/brcode-scanner/BrCodeScanner"), { ssr: false });
+import BrCodeScanner from "../../pages/scanner/components/brcode-scanner/BrCodeScanner";
 
 const Page: React.FC = () => {
-  return <BrCodeScanner />;
+  return (
+    <BrCodeScanner/>
+  );
 };
 
 export default Page;
