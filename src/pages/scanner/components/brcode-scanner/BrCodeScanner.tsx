@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useCallback } from "react";
+import React, { useEffect, useRef } from "react";
 import classes from "./index.module.css";
 import { useRouter } from "next/navigation";
 import {
@@ -34,26 +34,18 @@ const BrCodeScanner: React.FC = () => {
     videoRef: videoRef,
   });
 
-  // Ensure openCamera is stable and doesn't trigger re-renders
-  const handleOpenCamera = useCallback(() => {
+  // Ensure this only runs in the browser
+  useEffect(() => {
     if (typeof window !== "undefined") {
       openCamera();
     }
   }, [openCamera]);
 
-  const handleStartScanning = useCallback(() => {
+  useEffect(() => {
     if (isCameraOpen) {
       startScanning();
     }
   }, [isCameraOpen, startScanning]);
-
-  useEffect(() => {
-    handleOpenCamera();
-  }, [handleOpenCamera]);
-
-  useEffect(() => {
-    handleStartScanning();
-  }, [handleStartScanning]);
 
   const newVideoInputDevices = videoInputDevices.map((device) => ({
     value: device.deviceId,
@@ -62,68 +54,71 @@ const BrCodeScanner: React.FC = () => {
 
   return (
     <div className={classes.wrapper}>
-      <div>
-        <video ref={videoRef} className={classes.video}>
-          <track kind="captions" />
-        </video>
-        <div className={classes.frameContainer}>
-          <div className={`${classes.corner} ${classes.topLeft}`} />
-          <div className={`${classes.corner} ${classes.topRight}`} />
-          <div className={`${classes.corner} ${classes.bottomLeft}`} />
-          <div className={`${classes.corner} ${classes.bottomRight}`} />
-          <div
-            className={`${classes.scanStatus} 
-              ${status === "Already Scanned" && classes.scanStatusBgRed} 
-              ${status === "Scanned" && classes.scanStatusSuccess} 
-              ${status === "Scanning" && classes.scanStatusScanning} 
+      {/* Ensure rendering only happens on the client */}
+      {typeof window !== "undefined" && (
+        <>
+          <div>
+            <video ref={videoRef} className={classes.video} />
+            <div className={classes.frameContainer}>
+              <div className={`${classes.corner} ${classes.topLeft}`} />
+              <div className={`${classes.corner} ${classes.topRight}`} />
+              <div className={`${classes.corner} ${classes.bottomLeft}`} />
+              <div className={`${classes.corner} ${classes.bottomRight}`} />
+              <div
+                className={`${classes.scanStatus} 
+                ${status === "Already Scanned" && classes.scanStatusBgRed} 
+                ${status === "Scanned" && classes.scanStatusSuccess} 
+                ${status === "Scanning" && classes.scanStatusScanning} 
               `}
-          >
-            <IoMdStopwatch /> <span>{status}</span>
-          </div>
-        </div>
-        <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
-      </div>
-      <div className={classes.topHeader}>
-        <button
-          className={classes.smallBtn}
-          onClick={() => {
-            stopCamera();
-            router.push("/");
-          }}
-        >
-          <IoIosArrowBack size={20} />
-        </button>
-        <div style={{ display: "flex", gap: 10 }}>
-          <CameraSelectToggle
-            allDevices={newVideoInputDevices}
-            selectedDevice={selectedDeviceId}
-            setSelectedDevice={setSelectedDeviceId}
-            openCamera={openCamera}
-          />
-          <button className={classes.smallBtn} onClick={toggleFlashlight}>
-            {isFlashOn ? <IoIosFlash size={20} /> : <IoIosFlashOff size={20} />}
-          </button>
-        </div>
-      </div>
-      <div className={classes.scannedCodesContainer}>
-        <button className={classes.submitBtn}>
-          <IoMdCheckmark size={40} />
-        </button>
-        <div className={classes.scannedCodesList}>
-          {results.map((item, index) => (
-            <div key={index + "_"} className={classes.scannedCode}>
-              <Image
-                className={classes.scannerImg}
-                alt="scanned-image"
-                src={item.image || "/placeholder.svg"}
-                width={50}
-                height={50}
-              />
-              <p className={classes.scannerCount}>{results.length}</p>
+              >
+                <IoMdStopwatch /> <span>{status}</span>
+              </div>
             </div>
-          ))}
-        </div>
-      </div>
+            <canvas ref={canvasRef} style={{ display: "none" }}></canvas>
+          </div>
+          <div className={classes.topHeader}>
+            <button
+              className={classes.smallBtn}
+              onClick={() => {
+                stopCamera();
+                router.push("/");
+              }}
+            >
+              <IoIosArrowBack size={20} />
+            </button>
+            <div style={{ display: "flex", gap: 10 }}>
+              <CameraSelectToggle
+                allDevices={newVideoInputDevices}
+                selectedDevice={selectedDeviceId}
+                setSelectedDevice={setSelectedDeviceId}
+                openCamera={openCamera}
+              />
+              <button className={classes.smallBtn} onClick={toggleFlashlight}>
+                {isFlashOn ? <IoIosFlash size={20} /> : <IoIosFlashOff size={20} />}
+              </button>
+            </div>
+          </div>
+          <div className={classes.scannedCodesContainer}>
+            <button className={classes.submitBtn}>
+              <IoMdCheckmark size={40} />
+            </button>
+            <div className={classes.scannedCodesList}>
+              {results.map((item, index) => (
+                <div key={index + "_"} className={classes.scannedCode}>
+                  <Image
+                    className={classes.scannerImg}
+                    alt="scanned-image"
+                    src={item.image || "/placeholder.svg"}
+                    width={50}
+                    height={50}
+                  />
+                  <p className={classes.scannerCount}>{results.length}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
