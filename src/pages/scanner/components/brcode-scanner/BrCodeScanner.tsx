@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import classes from "./index.module.css";
 import { useRouter } from "next/navigation";
 import {
@@ -17,6 +17,8 @@ const BrCodeScanner: React.FC = () => {
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const [isClient, setIsClient] = useState(false);
+
   const {
     results,
     selectedDeviceId,
@@ -35,10 +37,14 @@ const BrCodeScanner: React.FC = () => {
   });
 
   useEffect(() => {
-    if (typeof navigator !== 'undefined') {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (isClient) {
       openCamera();
     }
-  }, []);
+  }, [isClient]);
 
   useEffect(() => {
     if (isCameraOpen) {
@@ -50,6 +56,10 @@ const BrCodeScanner: React.FC = () => {
     value: device.deviceId,
     label: device.label || `Camera ${videoInputDevices.indexOf(device) + 1}`,
   }));
+
+  if (!isClient) {
+    return null; // or a loading spinner
+  }
 
   return (
     <div className={classes.wrapper}>
